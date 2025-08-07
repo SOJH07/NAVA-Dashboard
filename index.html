@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nava Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc; /* slate-50 */
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px); /* slate-200 dots */
+            background-size: 20px 20px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                brand: {
+                  primary: '#05F2A0', // Accent Green
+                  'primary-light': '#E6FAF3', // Light Accent Green
+                  'primary-dark': '#04D991',  // Darker Accent Green
+                  secondary: '#0d9488', // teal-600
+                  'secondary-light': '#ccfbf1', // teal-100
+                  ceer: '#4f46e5', // indigo-600
+                  lucid: '#0d9488' // teal-600
+                },
+                text: {
+                  primary: '#111827', // gray-900
+                  secondary: '#4b5563', // gray-600
+                  muted: '#6b7280' // gray-500
+                },
+                bg: {
+                   body: '#f8fafc', // slate-50
+                   panel: '#ffffff',
+                   'panel-hover': '#f1f5f9' // slate-100
+                },
+                status: {
+                    tech: '#ef4444', // red-500
+                    'tech-light': '#fee2e2', // red-100
+                    english: '#3b82f6', // blue-500
+                    'english-light': '#dbeafe', // blue-100
+                    break: '#f59e0b', // amber-500
+                    'break-light': '#fef3c7', // amber-100
+                    vacant: '#10b981', // emerald-500
+                    'vacant-light': '#d1fae5', // emerald-100
+                    'out-of-service': '#64748b', // slate-500
+                    'out-of-service-light': '#f1f5f9', // slate-100
+                    upcoming: '#6366f1', // indigo-500
+                    'upcoming-light': '#e0e7ff', // indigo-100
+                },
+              },
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+              },
+              boxShadow: {
+                'glow-sm': '0 0 8px 0px rgba(5, 242, 160, 0.6)',
+                'glow-md': '0 0 15px 2px rgba(5, 242, 160, 0.6)',
+              },
+            }
+          }
+        }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "recharts": "https://esm.sh/recharts@^3.1.0",
+    "zustand": "https://esm.sh/zustand@^4.5.4",
+    "@dnd-kit/core": "https://esm.sh/@dnd-kit/core@^6.3.1",
+    "@dnd-kit/utilities": "https://esm.sh/@dnd-kit/utilities@^3.2.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.10.0",
+    "date-fns": "https://esm.sh/date-fns@^3.6.0",
+    "date-fns/": "https://esm.sh/date-fns@^4.1.0/",
+    "@dnd-kit/modifiers": "https://esm.sh/@dnd-kit/modifiers@^9.0.0",
+    "react-dom": "https://esm.sh/react-dom@^19.1.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="text-text-primary">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
