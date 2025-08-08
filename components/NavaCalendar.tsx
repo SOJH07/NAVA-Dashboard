@@ -61,19 +61,19 @@ const NavaCalendar: React.FC<NavaCalendarProps> = ({ events }) => {
 
     return (
         <div className="flex h-full">
-            <YearNavigator 
+            <YearNavigator
                 events={events}
                 currentDate={currentDate}
                 onDateSelect={setCurrentDate}
             />
             <div className="flex-1 flex flex-col min-w-0">
-                <header className="flex-shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center p-4 gap-4 border-b border-slate-200">
+                <header className="flex-shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center p-4 gap-4 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
                     <h2 className="text-xl font-bold text-text-primary">NAVA Operational Calendar</h2>
                     <Legend activeFilters={activeFilters} onToggle={handleToggleFilter} />
                 </header>
-                <main className="flex-grow p-4 min-h-0 bg-slate-50">
-                    <GridView 
-                        events={filteredEvents} 
+                <main className="flex-grow p-4 min-h-0 bg-bg-panel-hover">
+                    <GridView
+                        events={filteredEvents}
                         currentDate={currentDate}
                         setCurrentDate={setCurrentDate}
                     />

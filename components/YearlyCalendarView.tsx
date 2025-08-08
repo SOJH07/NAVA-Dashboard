@@ -43,13 +43,13 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
 
 
     return (
-        <div className="h-full flex flex-col bg-slate-50 relative">
-            <header className="flex-shrink-0 flex justify-center items-center p-3 gap-4">
+        <div className="h-full flex flex-col bg-bg-panel relative">
+            <header className="flex-shrink-0 flex justify-center items-center p-3 gap-4 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
                  <div className="flex items-center bg-white border border-slate-300 rounded-lg shadow-sm overflow-hidden">
                     <span className="px-3 py-2 text-sm font-bold text-green-800 bg-green-200">Academic Year</span>
-                     <select 
-                        value={academicYear} 
-                        onChange={e => setAcademicYear(e.target.value)} 
+                     <select
+                        value={academicYear}
+                        onChange={e => setAcademicYear(e.target.value)}
                         className="font-bold text-lg text-text-primary bg-transparent pl-3 pr-4 py-1.5 focus:outline-none appearance-none cursor-pointer"
                     >
                         {ACADEMIC_YEARS.map(year => (
@@ -59,7 +59,7 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
                 </div>
             </header>
 
-            <div className="flex-grow min-h-0 overflow-auto p-2">
+            <div className="flex-grow min-h-0 overflow-auto p-2 bg-bg-panel-hover">
                 <table className="w-full border-collapse">
                     <thead>
                         <tr>
