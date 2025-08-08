@@ -8,6 +8,7 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
     const [academicYear, setAcademicYear] = useState('2024-2025');
     const activeMonthRowRef = useRef<HTMLTableRowElement>(null);
     const today = new Date(); // Dynamic 'today'
+    const todayDayIndex = today.getDate() - 1;
 
     const { months, eventsByDate } = useMemo(() => {
         const [startYearStr] = academicYear.split('-');
@@ -43,13 +44,13 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
 
 
     return (
-        <div className="h-full flex flex-col bg-slate-50 relative">
-            <header className="flex-shrink-0 flex justify-center items-center p-3 gap-4">
+        <div className="h-full flex flex-col bg-bg-panel relative">
+            <header className="flex-shrink-0 flex justify-center items-center p-3 gap-4 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
                  <div className="flex items-center bg-white border border-slate-300 rounded-lg shadow-sm overflow-hidden">
                     <span className="px-3 py-2 text-sm font-bold text-green-800 bg-green-200">Academic Year</span>
-                     <select 
-                        value={academicYear} 
-                        onChange={e => setAcademicYear(e.target.value)} 
+                     <select
+                        value={academicYear}
+                        onChange={e => setAcademicYear(e.target.value)}
                         className="font-bold text-lg text-text-primary bg-transparent pl-3 pr-4 py-1.5 focus:outline-none appearance-none cursor-pointer"
                     >
                         {ACADEMIC_YEARS.map(year => (
@@ -59,13 +60,20 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
                 </div>
             </header>
 
-            <div className="flex-grow min-h-0 overflow-auto p-2">
+            <div className="flex-grow min-h-0 overflow-auto p-2 bg-bg-panel-hover">
                 <table className="w-full border-collapse">
                     <thead>
                         <tr>
                             <th className="sticky top-0 bg-slate-200 z-20 p-2 text-sm font-semibold text-text-primary w-32 min-w-[8rem]">Month</th>
                             {Array.from({ length: 31 }).map((_, i) => (
-                                <th key={i} className="sticky top-0 bg-slate-100 z-10 p-2 text-center font-normal text-text-secondary w-10 min-w-[2.5rem]">{i + 1}</th>
+                                <th
+                                    key={i}
+                                    className={`sticky top-0 z-10 p-2 text-center font-normal w-10 min-w-[2.5rem] ${
+                                        i === todayDayIndex ? 'bg-amber-200 text-text-primary' : 'bg-slate-100 text-text-secondary'
+                                    }`}
+                                >
+                                    {i + 1}
+                                </th>
                             ))}
                         </tr>
                     </thead>
@@ -80,19 +88,22 @@ const YearlyCalendarView: React.FC<{ events: CalendarEvent[] }> = ({ events }) =
                                     {Array.from({ length: 31 }).map((_, dayIndex) => {
                                         const day = dayIndex + 1;
                                         const date = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
-                                        
+
                                         if (date.getMonth() !== monthDate.getMonth()) {
                                             return <td key={day} className="bg-slate-100/50"></td>;
                                         }
-                                        
+
                                         const dateStr = format(date, 'yyyy-MM-dd');
                                         const event = eventsByDate.get(dateStr);
                                         const isTodayCell = isSameDay(date, today);
+                                        const isTodayColumn = dayIndex === todayDayIndex && isSameMonth(monthDate, today);
 
                                         return (
-                                            <td 
-                                                key={day} 
-                                                className={`h-10 w-10 text-center font-medium text-xs border border-slate-200/80 transition-shadow hover:shadow-lg hover:z-30 ${event ? event.color : 'bg-white'}`}
+                                            <td
+                                                key={day}
+                                                className={`h-10 w-10 text-center font-medium text-xs border border-slate-200/80 transition-shadow hover:shadow-lg hover:z-30 ${
+                                                    event ? event.color : 'bg-white'
+                                                } ${isTodayColumn ? 'ring-2 ring-amber-300' : ''}`}
                                                 title={event ? event.event : ''}
                                             >
                                                 <span className={`inline-block px-1 rounded ${isTodayCell ? 'bg-red-500 text-white font-bold' : ''}`}>
