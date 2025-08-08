@@ -41,6 +41,7 @@ const Legend: React.FC<{ activeFilters: Set<string>, onToggle: (type: string) =>
 const NavaCalendar: React.FC<NavaCalendarProps> = ({ events }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+    const [showLegend, setShowLegend] = useState(true);
 
     const handleToggleFilter = (eventType: string) => {
         setActiveFilters(prev => {
@@ -69,7 +70,16 @@ const NavaCalendar: React.FC<NavaCalendarProps> = ({ events }) => {
             <div className="flex-1 flex flex-col min-w-0">
                 <header className="flex-shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center p-4 gap-4 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
                     <h2 className="text-xl font-bold text-text-primary">NAVA Operational Calendar</h2>
-                    <Legend activeFilters={activeFilters} onToggle={handleToggleFilter} />
+                    <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+                        {showLegend && <Legend activeFilters={activeFilters} onToggle={handleToggleFilter} />}
+                        <button
+                            onClick={() => setShowLegend(prev => !prev)}
+                            className="p-2 rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors"
+                            title="Toggle legend"
+                        >
+                            {showLegend ? '✕' : '🎛️'}
+                        </button>
+                    </div>
                 </header>
                 <main className="flex-grow p-4 min-h-0 bg-bg-panel-hover">
                     <GridView
