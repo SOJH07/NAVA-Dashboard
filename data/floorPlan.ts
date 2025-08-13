@@ -1,6 +1,7 @@
 import type { FloorPlanItem } from '../types';
 
-export const floorPlanLayoutData: FloorPlanItem[] = [
+// Fixture used for development and tests
+export const floorPlanLayoutFixture: FloorPlanItem[] = [
     { name: 'C-218', type: 'classroom', gridColumn: '1', gridRow: '1' },
     { name: 'C-217', type: 'classroom', gridColumn: '1', gridRow: '2' },
     { name: 'C-216', type: 'classroom', gridColumn: '1', gridRow: '3' },
@@ -25,3 +26,6 @@ export const floorPlanLayoutData: FloorPlanItem[] = [
     { name: 'WS-11', type: 'lab', gridColumn: '2', gridRow: '8' },
     { name: 'WS-06', type: 'lab', gridColumn: '2', gridRow: '9' },
 ];
+
+// Backwards compatibility export
+export const floorPlanLayoutData = floorPlanLayoutFixture;

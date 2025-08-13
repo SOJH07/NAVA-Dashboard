@@ -41,10 +41,32 @@ export const useLiveStatus = (
     scheduleAssignments: Assignment[]
 ) => {
     const [now, setNow] = useState(new Date());
+    const [externalData, setExternalData] = useState<{ occupancy: OccupancyData; liveStudents: LiveStudent[]; liveClasses: LiveClass[] } | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         const timerId = setInterval(() => setNow(new Date()), 1000); // Update every second for live timer
         return () => clearInterval(timerId);
+    }, []);
+
+    useEffect(() => {
+        const fetchLiveStatus = async () => {
+            try {
+                const res = await fetch('/api/live-status');
+                if (!res.ok) throw new Error('Failed to fetch live status');
+                const data = await res.json();
+                setExternalData(data);
+                setError(null);
+            } catch (e) {
+                setError(e as Error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchLiveStatus();
+        const interval = setInterval(fetchLiveStatus, 10000); // poll every 10s
+        return () => clearInterval(interval);
     }, []);
 
     const weekNumber = useMemo(() => getWeekNumber(now), [now]);
@@ -167,5 +189,7 @@ export const useLiveStatus = (
 
     }, [enhancedStudents, nowMinutes, currentPeriod, isEvenWeek, groupInfo, dailySchedule, scheduleAssignments]);
 
-    return { now, weekNumber, isEvenWeek, currentPeriod, ...liveData, overallStatus };
+    const finalData = externalData || liveData;
+
+    return { now, weekNumber, isEvenWeek, currentPeriod, ...finalData, overallStatus, loading, error };
 };

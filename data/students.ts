@@ -1,6 +1,7 @@
 import type { Student } from '../types';
 
-export const studentsData: Student[] = [
+// Fixture used for development and tests
+export const studentsFixture: Student[] = [
   {
     navaId: 24001,
     name: 'Omar',
@@ -1972,3 +1973,6 @@ export const studentsData: Student[] = [
     company: 'Ceer',
   },
 ];
+
+// Backwards compatibility export
+export const studentsData = studentsFixture;

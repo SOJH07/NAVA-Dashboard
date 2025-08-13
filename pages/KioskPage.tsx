@@ -17,6 +17,16 @@ const KioskPage: React.FC = () => {
     dashboardData.groupInfo,
     dashboardData.processedScheduleData
   );
+
+  if (dashboardData.loading || liveStatusData.loading) {
+    return <div className="p-6">Loading...</div>;
+  }
+  if (dashboardData.error) {
+    return <div className="p-6 text-red-500">Error: {dashboardData.error.message}</div>;
+  }
+  if (liveStatusData.error) {
+    return <div className="p-6 text-red-500">Error: {liveStatusData.error.message}</div>;
+  }
   const { classrooms: classroomState } = useClassroomStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClassroom, setSelectedClassroom] = useState<string | null>(null);

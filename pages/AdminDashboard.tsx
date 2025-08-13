@@ -53,6 +53,16 @@ const AdminDashboard: React.FC = () => {
         dashboardData.processedScheduleData
     );
 
+    if (dashboardData.loading || liveStatusData.loading) {
+        return <div className="p-6">Loading...</div>;
+    }
+    if (dashboardData.error) {
+        return <div className="p-6 text-red-500">Error: {dashboardData.error.message}</div>;
+    }
+    if (liveStatusData.error) {
+        return <div className="p-6 text-red-500">Error: {liveStatusData.error.message}</div>;
+    }
+
     const activeFilterCount = useMemo(() => {
         return Object.values(filters).reduce((count, filterValue) => {
             if (Array.isArray(filterValue) && filterValue.length > 0) {

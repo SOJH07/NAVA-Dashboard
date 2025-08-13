@@ -1,8 +1,8 @@
 
 import { AptisScores } from '../types';
 
-// This data is parsed from the user-provided CSV.
-export const aptisScoresData: { [navaId: number]: AptisScores } = {
+// This fixture is parsed from the user-provided CSV.
+export const aptisScoresFixture: { [navaId: number]: AptisScores } = {
   24001: { grammarVocabulary: { score: 14, cefr: '' }, listening: { score: 28, cefr: 'B1' }, reading: { score: 14, cefr: 'A1' }, speaking: { score: 5, cefr: 'A1' }, writing: { score: 2, cefr: 'A0' }, overall: { score: 49, cefr: 'A1' } },
   24003: { grammarVocabulary: { score: 21, cefr: '' }, listening: { score: 28, cefr: 'B1' }, reading: { score: 20, cefr: 'A2' }, speaking: { score: 34, cefr: 'B1' }, writing: { score: 4, cefr: 'A0' }, overall: { score: 86, cefr: 'A2' } },
   24004: { grammarVocabulary: { score: 11, cefr: '' }, listening: { score: 26, cefr: 'B1' }, reading: { score: 12, cefr: 'A1' }, speaking: { score: 19, cefr: 'A2' }, writing: { score: 20, cefr: 'A2' }, overall: { score: 77, cefr: 'A2' } },
@@ -201,3 +201,6 @@ export const aptisScoresData: { [navaId: number]: AptisScores } = {
   24213: { grammarVocabulary: { score: 28, cefr: '' }, listening: { score: 34, cefr: 'B2' }, reading: { score: 24, cefr: 'A2' }, speaking: { score: 34, cefr: 'B1' }, writing: { score: 24, cefr: 'A2' }, overall: { score: 116, cefr: 'B1' } },
   24215: { grammarVocabulary: { score: 31, cefr: '' }, listening: { score: 40, cefr: 'B2' }, reading: { score: 36, cefr: 'B1' }, speaking: { score: 38, cefr: 'B1' }, writing: { score: 38, cefr: 'B1' }, overall: { score: 152, cefr: 'B1' } },
 };
+
+// Backwards compatibility export
+export const aptisScoresData = aptisScoresFixture;

@@ -1,12 +1,66 @@
 
 
-import { useMemo } from 'react';
-import type { EnhancedStudent } from '../types';
-import { students, groupInfo, dailySchedule, floorPlanLayout } from '../data/academyData';
-import { processedScheduleData } from '../data/scheduleData';
-import { aptisScoresData } from '../data/aptisScores';
+import { useMemo, useState, useEffect } from 'react';
+import type {
+  EnhancedStudent,
+  Student,
+  GroupInfo,
+  DailyPeriod,
+  FloorPlanItem,
+  Assignment,
+  AptisScores,
+} from '../types';
 
 export const useDashboardData = () => {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [groupInfo, setGroupInfo] = useState<GroupInfo>({});
+  const [dailySchedule, setDailySchedule] = useState<DailyPeriod[]>([]);
+  const [floorPlanLayout, setFloorPlanLayout] = useState<FloorPlanItem[]>([]);
+  const [processedScheduleData, setProcessedScheduleData] = useState<Assignment[]>([]);
+  const [aptisScoresData, setAptisScoresData] = useState<Record<number, AptisScores>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [studentsRes, groupInfoRes, dailyRes, floorPlanRes, scheduleRes, aptisRes] = await Promise.all([
+          fetch('/api/students'),
+          fetch('/api/group-info'),
+          fetch('/api/daily-schedule'),
+          fetch('/api/floor-plan'),
+          fetch('/api/schedule'),
+          fetch('/api/aptis-scores'),
+        ]);
+
+        if (!studentsRes.ok || !groupInfoRes.ok || !dailyRes.ok || !floorPlanRes.ok || !scheduleRes.ok || !aptisRes.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
+        const [studentsData, groupInfoData, dailyData, floorPlanData, scheduleData, aptisData] = await Promise.all([
+          studentsRes.json(),
+          groupInfoRes.json(),
+          dailyRes.json(),
+          floorPlanRes.json(),
+          scheduleRes.json(),
+          aptisRes.json(),
+        ]);
+
+        setStudents(studentsData);
+        setGroupInfo(groupInfoData);
+        setDailySchedule(dailyData);
+        setFloorPlanLayout(floorPlanData);
+        setProcessedScheduleData(scheduleData);
+        setAptisScoresData(aptisData);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const enhancedStudents = useMemo<EnhancedStudent[]>(() => {
     return students.map(student => {
@@ -34,7 +88,7 @@ export const useDashboardData = () => {
         aptisScores: aptisScores,
       };
     });
-  }, []);
+  }, [students, groupInfo, aptisScoresData]);
 
   const aptisSkillAverages = useMemo(() => {
     const studentsWithScores = Object.values(aptisScoresData);
@@ -66,7 +120,7 @@ export const useDashboardData = () => {
       speaking: scoreSums.speaking / count,
       writing: scoreSums.writing / count,
     };
-  }, []);
+  }, [aptisScoresData]);
 
   const groupStudentCounts = useMemo(() => {
     const techCounts: Record<string, number> = {};
@@ -168,7 +222,7 @@ export const useDashboardData = () => {
         allEnglishGroups: Array.from(allEnglishGroupsStatic).sort((a, b) => parseInt(a.substring(1)) - parseInt(b.substring(1))),
         allClassrooms: floorPlanLayout.filter(item => item.type === 'classroom' || item.type === 'lab').map(item => item.name).sort(),
     };
-  }, [students, groupInfo, floorPlanLayout, enhancedStudents]);
+  }, [students, groupInfo, floorPlanLayout, enhancedStudents, aptisScoresData]);
 
   return {
     kpis,
@@ -182,5 +236,7 @@ export const useDashboardData = () => {
     groupCompanyMap,
     allFilterOptions,
     aptisSkillAverages,
+    loading,
+    error,
   };
 };
