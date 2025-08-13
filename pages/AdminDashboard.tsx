@@ -1,7 +1,6 @@
-
-
 import React, { useState, useMemo } from 'react';
 import type { Page, LiveOpsFilters, Assignment, EnhancedStudent } from '../types';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import GlobalFilterPanel from '../components/GlobalFilterPanel';
@@ -37,8 +36,9 @@ const INITIAL_FILTERS: LiveOpsFilters = {
     aptisCEFRLevels: [],
 };
 
-const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
-    const [activePage, setActivePage] = useState<string>('kpiOverview');
+const AdminDashboard: React.FC = () => {
+    const location = useLocation();
+    const activePage = location.pathname.split('/')[2] || 'kpiOverview';
     const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
     const [isLiveStatusSidebarCollapsed, setIsLiveStatusSidebarCollapsed] = useState(false);
     const [filters, setFilters] = useState<LiveOpsFilters>(INITIAL_FILTERS);
@@ -78,7 +78,7 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
         });
     };
 
-     const toggleSessionTypeFilter = (sessionType: 'tech' | 'english') => {
+    const toggleSessionTypeFilter = (sessionType: 'tech' | 'english') => {
         setFilters(prev => ({
             ...prev,
             sessionType: prev.sessionType === sessionType ? 'all' : sessionType
@@ -86,7 +86,7 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
     };
 
     const clearFilters = () => setFilters(INITIAL_FILTERS);
-    
+
     const sessionInfo = useMemo(() => {
         const techGroupsInSession = new Set<string>();
         const englishGroupsInSession = new Set<string>();
@@ -100,7 +100,7 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
                 }
             }
         });
-        
+
         return {
             sessionCounts: {
                 tech: techGroupsInSession.size,
@@ -113,71 +113,10 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
         };
     }, [liveStatusData.liveStudents]);
 
-
-    const renderPage = () => {
-        switch (activePage) {
-            case 'kpiOverview':
-                return <KpiOverviewPage
-                            allStudents={dashboardData.enhancedStudents}
-                            students={liveStatusData.liveStudents}
-                            allFilterOptions={dashboardData.allFilterOptions}
-                            liveStatusData={liveStatusData}
-                            filters={filters}
-                            globalSearchTerm={globalSearchTerm}
-                            setFilters={setFilters}
-                            toggleArrayFilter={toggleArrayFilter}
-                            clearFilters={clearFilters}
-                        />;
-            case 'analytics':
-                 return <AnalyticsPage
-                            students={dashboardData.enhancedStudents}
-                            allFilterOptions={dashboardData.allFilterOptions}
-                            filters={filters}
-                            globalSearchTerm={globalSearchTerm}
-                            toggleArrayFilter={toggleArrayFilter}
-                        />;
-            case 'liveOps':
-                return <LiveOperationsPage 
-                            dashboardData={dashboardData}
-                            liveStatusData={liveStatusData}
-                            filters={filters}
-                            globalSearchTerm={globalSearchTerm}
-                            setFilters={setFilters}
-                            toggleArrayFilter={toggleArrayFilter}
-                            clearFilters={clearFilters}
-                        />;
-            case 'studentFinder':
-                return <StudentFinderPage
-                            enhancedStudents={dashboardData.enhancedStudents}
-                            liveStudents={liveStatusData.liveStudents}
-                            globalSearchTerm={globalSearchTerm}
-                            aptisSkillAverages={aptisSkillAverages}
-                            filters={filters}
-                        />;
-            case 'instructorSchedule':
-                return <InstructorSchedulePage 
-                            filters={filters} 
-                            groupInfo={dashboardData.groupInfo}
-                            groupCompanyMap={dashboardData.groupCompanyMap}
-                            activeFilterCount={activeFilterCount}
-                            dailySchedule={dashboardData.dailySchedule}
-                            isEvenWeek={liveStatusData.isEvenWeek}
-                            currentPeriod={liveStatusData.currentPeriod}
-                            now={liveStatusData.now}
-                            globalSearchTerm={globalSearchTerm}
-                            allStudents={dashboardData.enhancedStudents}
-                        />;
-            case 'calendar':
-                return <CalendarPage />;
-            default:
-                return <div>Select a page</div>;
-        }
-    };
-
     return (
         <div className="h-screen flex bg-bg-body">
-            <Sidebar pages={pages} activePage={activePage} setActivePage={setActivePage} onLogout={onLogout} />
-             <GlobalFilterPanel 
+            <Sidebar pages={pages} />
+            <GlobalFilterPanel
                 isOpen={isFilterPanelOpen}
                 onClose={() => setIsFilterPanelOpen(false)}
                 filters={filters}
@@ -187,7 +126,7 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
                 allFilterOptions={dashboardData.allFilterOptions}
             />
             <main className="flex-1 flex flex-col overflow-hidden">
-                <Header 
+                <Header
                     pageTitle={pages.find(p => p.id === activePage)?.label || 'Dashboard'}
                     onFilterButtonClick={() => setIsFilterPanelOpen(true)}
                     activeFilterCount={activeFilterCount}
@@ -195,11 +134,75 @@ const AdminDashboard: React.FC<{onLogout: () => void}> = ({ onLogout }) => {
                     onSearchChange={setGlobalSearchTerm}
                 />
                 <div className="flex-1 overflow-y-auto px-6 pb-6">
-                    {renderPage()}
+                    <Routes>
+                        <Route
+                            path="kpiOverview"
+                            element={<KpiOverviewPage
+                                allStudents={dashboardData.enhancedStudents}
+                                students={liveStatusData.liveStudents}
+                                allFilterOptions={dashboardData.allFilterOptions}
+                                liveStatusData={liveStatusData}
+                                filters={filters}
+                                globalSearchTerm={globalSearchTerm}
+                                setFilters={setFilters}
+                                toggleArrayFilter={toggleArrayFilter}
+                                clearFilters={clearFilters}
+                            />}
+                        />
+                        <Route
+                            path="analytics"
+                            element={<AnalyticsPage
+                                students={dashboardData.enhancedStudents}
+                                allFilterOptions={dashboardData.allFilterOptions}
+                                filters={filters}
+                                globalSearchTerm={globalSearchTerm}
+                                toggleArrayFilter={toggleArrayFilter}
+                            />}
+                        />
+                        <Route
+                            path="liveOps"
+                            element={<LiveOperationsPage
+                                dashboardData={dashboardData}
+                                liveStatusData={liveStatusData}
+                                filters={filters}
+                                globalSearchTerm={globalSearchTerm}
+                                setFilters={setFilters}
+                                toggleArrayFilter={toggleArrayFilter}
+                                clearFilters={clearFilters}
+                            />}
+                        />
+                        <Route
+                            path="studentFinder"
+                            element={<StudentFinderPage
+                                enhancedStudents={dashboardData.enhancedStudents}
+                                liveStudents={liveStatusData.liveStudents}
+                                globalSearchTerm={globalSearchTerm}
+                                aptisSkillAverages={aptisSkillAverages}
+                                filters={filters}
+                            />}
+                        />
+                        <Route
+                            path="instructorSchedule"
+                            element={<InstructorSchedulePage
+                                filters={filters}
+                                groupInfo={dashboardData.groupInfo}
+                                groupCompanyMap={dashboardData.groupCompanyMap}
+                                activeFilterCount={activeFilterCount}
+                                dailySchedule={dashboardData.dailySchedule}
+                                isEvenWeek={liveStatusData.isEvenWeek}
+                                currentPeriod={liveStatusData.currentPeriod}
+                                now={liveStatusData.now}
+                                globalSearchTerm={globalSearchTerm}
+                                allStudents={dashboardData.enhancedStudents}
+                            />}
+                        />
+                        <Route path="calendar" element={<CalendarPage />} />
+                        <Route path="*" element={<Navigate to="kpiOverview" replace />} />
+                    </Routes>
                 </div>
             </main>
-             <LiveStatusSidebar 
-                liveStatusData={liveStatusData} 
+            <LiveStatusSidebar
+                liveStatusData={liveStatusData}
                 dailySchedule={dashboardData.dailySchedule}
                 assignments={dashboardData.processedScheduleData}
                 sessionInfo={sessionInfo}
