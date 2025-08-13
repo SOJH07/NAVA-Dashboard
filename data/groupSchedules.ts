@@ -1,6 +1,7 @@
 import type { GroupSchedule } from '../types';
 
-export const groupSchedulesData: GroupSchedule[] = [
+// Fixture used for development and tests
+export const groupSchedulesFixture: GroupSchedule[] = [
     // EVEN WEEK MORNING GROUPS
     { group_name: 'G1', schedule_type: 'evenWeekMorningEnglish' },
     { group_name: 'G2', schedule_type: 'evenWeekMorningEnglish' },
@@ -30,3 +31,6 @@ export const groupSchedulesData: GroupSchedule[] = [
     { group_name: 'DPST-02', schedule_type: 'oddWeekMorningTech' },
     { group_name: 'DPIT-07', schedule_type: 'oddWeekMorningTech' },
 ];
+
+// Backwards compatibility export
+export const groupSchedulesData = groupSchedulesFixture;

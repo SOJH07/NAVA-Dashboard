@@ -2,7 +2,8 @@
 
 import type { Curriculum } from '../types';
 
-export const curriculumData: Curriculum[] = [
+// Fixture used for development and tests
+export const curriculumFixture: Curriculum[] = [
     { group_name: 'DPIT-01', curriculum_name: '', track_name: 'Industrial Tech' },
     { group_name: 'DPIT-03', curriculum_name: '', track_name: 'Industrial Tech' },
     { group_name: 'DPIT-05', curriculum_name: '', track_name: 'Industrial Tech' },
@@ -16,3 +17,6 @@ export const curriculumData: Curriculum[] = [
     { group_name: 'DPST-03', curriculum_name: '', track_name: 'Service Tech' },
     { group_name: 'DFPD-01', curriculum_name: '', track_name: 'Service Tech' },
 ];
+
+// Backwards compatibility export
+export const curriculumData = curriculumFixture;

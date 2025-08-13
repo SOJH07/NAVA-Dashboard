@@ -1,6 +1,7 @@
 import type { DailyPeriod } from '../types';
 
-export const dailyPeriodsData: DailyPeriod[] = [
+// Fixture used for development and tests
+export const dailyPeriodsFixture: DailyPeriod[] = [
     { name: 'P1', start: '08:00', end: '08:55', type: 'class' },
     { name: 'P2', start: '08:55', end: '09:50', type: 'class' },
     { name: 'Breakfast Break', start: '09:50', end: '10:10', type: 'break' },
@@ -12,3 +13,6 @@ export const dailyPeriodsData: DailyPeriod[] = [
     { name: 'Short Break', start: '14:35', end: '14:45', type: 'break' },
     { name: 'P7', start: '14:45', end: '15:40', type: 'class' },
 ];
+
+// Backwards compatibility export
+export const dailyPeriodsData = dailyPeriodsFixture;

@@ -1,26 +1,26 @@
 import type { GroupInfo, FloorPlanItem, DailyPeriod, Student } from '../types';
-import { studentsData } from './students';
-import { dailyPeriodsData } from './dailyPeriods';
-import { groupSchedulesData } from './groupSchedules';
-import { curriculumData } from './curriculum';
-import { floorPlanLayoutData } from './floorPlan';
+import { studentsFixture } from './students';
+import { dailyPeriodsFixture } from './dailyPeriods';
+import { groupSchedulesFixture } from './groupSchedules';
+import { curriculumFixture } from './curriculum';
+import { floorPlanLayoutFixture } from './floorPlan';
 
-// Re-exporting raw data
-export const students: Student[] = studentsData;
-export const dailySchedule: DailyPeriod[] = dailyPeriodsData;
-export const floorPlanLayout: FloorPlanItem[] = floorPlanLayoutData;
+// Re-exporting fixture data
+export const students: Student[] = studentsFixture;
+export const dailySchedule: DailyPeriod[] = dailyPeriodsFixture;
+export const floorPlanLayout: FloorPlanItem[] = floorPlanLayoutFixture;
 
 // Combining schedule and curriculum into groupInfo
 const combinedGroupInfo: { [key:string]: { schedule_type?: string; curriculum_name?: string; track_name?: string; } } = {};
 
-groupSchedulesData.forEach(schedule => {
+groupSchedulesFixture.forEach(schedule => {
     if (!combinedGroupInfo[schedule.group_name]) {
         combinedGroupInfo[schedule.group_name] = {};
     }
     combinedGroupInfo[schedule.group_name].schedule_type = schedule.schedule_type;
 });
 
-curriculumData.forEach(curriculum => {
+curriculumFixture.forEach(curriculum => {
     if (!combinedGroupInfo[curriculum.group_name]) {
         combinedGroupInfo[curriculum.group_name] = {};
     }

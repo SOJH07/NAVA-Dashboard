@@ -1,6 +1,7 @@
 import type { Assignment } from '../types';
 
-export const allInstructors = {
+// Fixture used for development and tests
+export const allInstructorsFixture = {
   tech: [
     'Abdul Basit',
     'Ali Sameh',
@@ -27,6 +28,9 @@ export const allInstructors = {
     'Singh A'
   ].sort(),
 };
+
+// Backwards compatibility export
+export const allInstructors = allInstructorsFixture;
 
 const rawScheduleOdd = [
     // --- SUNDAY, July 27, 2025 ---
@@ -225,9 +229,12 @@ const rawEnglishScheduleEven = [
     ...createEnglishScheduleTemplate(evenWeekAfternoonEnglishGroups, englishTeachers, 'even', false),
 ];
 
-export const processedScheduleData: Assignment[] = [
+export const scheduleAssignmentsFixture: Assignment[] = [
     ...processRawSchedule(rawScheduleOdd, 'odd', 'Technical'),
     ...processRawSchedule(rawScheduleEven, 'even', 'Technical'),
     ...processRawSchedule(rawEnglishScheduleOdd_Week41, 'odd', 'English'),
     ...processRawSchedule(rawEnglishScheduleEven, 'even', 'English'),
 ];
+
+// Backwards compatibility export
+export const processedScheduleData = scheduleAssignmentsFixture;
